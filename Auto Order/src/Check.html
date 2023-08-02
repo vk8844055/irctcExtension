@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="user-form">
+            <h1>Add Passenger Information</h1>
+             <form>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" placeholder="Enter your age" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <input type="radio" id="male" name="gender" value="M">
+                    <label for="male">Male</label>
+                    <input type="radio" id="female" name="gender" value="F">
+                    <label for="female">Female</label>
+                    <input type="radio" id="other" name="gender" value="T">
+                    <label for="other">Other</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="foodChoice">Food Choice:</label>
+                    <select id="foodChoice">
+                        <option value="V">Veg</option>
+                        <option value="N">Non-Veg</option>
+                        <option value="D">No Choice</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="berthChoice">Berth Choice:</label>
+                    <select id="berthChoice">
+                        <option value="">No Choice</option>
+                        <option value="LB">Lower Berth LB</option>
+                        <option value="MB">Middle Berth MB</option>
+                        <option value="UP">Upper Berth UP</option>
+                        <option value="SL">Side Lower SL</option>
+                        <option value="SU">Side Upper SU</option>
+                        <option value="WS">Window Sheet WS</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button id="addPassengerBtn">Add More Passenger</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="passenger-table">
+            <h2>Saved Passenger Data:</h2>
+            <table id="passengerTable">
+                <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Berth Choice</th>
+                    <th>Food Choice</th>
+                    <th>Delete</th>
+                </tr>
+            </table>
+            <input type="submit" value="Submit" id="submitBtn">
+        </div>
+    </div>
+    <div class="container">
+        <div class="details-container">
+            <div class="travel-details" id="travelDetailsBlock">
+               <h3>Travel Details    <button id="chagneDetails">    Change Details     </button></h3> 
+                <p><strong>Source:</strong> <span id="source"></span></p>
+                <p><strong>Destination:</strong> <span id="destination"></span></p>
+                <p><strong>Date:</strong> <span id="date"></span></p>
+                <p><strong>Class:</strong> <span id="class"></span></p>
+            </div>
+
+            <div class="passenger-details">
+                <h3>Selected Passenger Information</h3>
+                <div id="passengerDetails">
+                    <!-- Selected passenger details will be displayed here -->
+                </div>
+            </div>
+        </div>    
+    </div>
+    <h4>*All collected data will saved in the browser only</h4>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,354 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    display: flex;
+}
+
+.user-form {
+    flex: 1;
+    background-color: #f8e0e0; /* Light pink */
+    padding: 20px;
+}
+
+.user-form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1 1 100%; /* Allow flex items to wrap and take full width */
+    display: flex;
+    align-items: center;
+    margin: 5px;
+}
+
+.form-group label {
+    flex: 0 0 100px; /* Fixed width for labels */
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.form-group input,
+.form-group select,
+.form-group button {
+    flex: 1; /* Flex-grow to occupy remaining space */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group input[type="radio"] {
+    margin-right: 5px;
+}
+
+.form-group button {
+    background-color: #007BFF; /* Blue */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.passenger-table {
+    flex: 1;
+    background-color: #e0f8e0; /* Light green */
+    padding: 20px;
+    margin-left: 20px;
+}
+
+#passengerTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#passengerTable th,
+#passengerTable td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+#passengerTable th {
+    background-color: #f2f2f2;
+}
+
+#addPassengerBtn {
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+}
+/* ... (existing CSS code) ... */
+
+.form-group button {
+    background-color: #007BFF; /* Blue */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Add a smooth transition effect */
+}
+
+.form-group button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Add color to the "Submit" button */
+#submitBtn {
+    background-color: #28a745; /* Green */
+    margin-top: 20px;
+}
+
+#submitBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* ... (existing CSS code) ... */
+
+.form-group button {
+    background-color: #007BFF; /* Blue */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Add a smooth transition effect */
+}
+
+.form-group button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Add color to the "Submit" button */
+#submitBtn {
+    background-color: #28a745; /* Green */
+    margin-top: 20px;
+}
+
+#submitBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* ... (existing CSS code) ... */
+
+/* Style for the "Add More Passenger" button */
+#addPassengerBtn {
+    background-color: #007BFF; /* Blue */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Add a smooth transition effect */
+}
+
+#addPassengerBtn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Style for the "Submit" button */
+#submitBtn {
+    background-color: #28a745; /* Green */
+    margin-top: 20px;
+}
+
+#submitBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Style for the passenger data table */
+.passenger-table table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.passenger-table th,
+.passenger-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.passenger-table th {
+    background-color: #f2f2f2; /* Light gray */
+}
+
+/* Style for the selected passenger information block */
+.selected-passengers {
+    margin-top: 40px;
+}
+
+.selected-passengers h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.selected-passengers ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.selected-passengers li {
+    font-size: 16px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* Add some margin to the container */
+.container {
+    margin: 20px;
+}
+
+
+
+/* ... (existing CSS code) ... */
+
+/* Style for the selected passenger information block */
+.selected-passengers {
+    margin-top: 40px;
+    border-top: 2px solid #007BFF; /* Blue top border */
+    padding-top: 20px;
+}
+
+.selected-passengers h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007BFF; /* Blue header color */
+}
+
+.selected-passengers ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.selected-passengers li {
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    color: #333; /* Dark text color */
+}
+
+/* Add background color and border-radius to the selected passenger information */
+.selected-passengers {
+    background-color: #f9f9f9; /* Light gray background */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+}
+
+/* ... (existing CSS code) ... */
+
+/* Style for the selected passenger information block */
+.selected-passengers {
+    margin-top: 40px;
+    border-top: 2px solid #007BFF; /* Blue top border */
+    padding-top: 20px;
+    background-color: #f9f9f9; /* Light gray background */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+}
+
+.selected-passengers h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007BFF; /* Blue header color */
+}
+
+.selected-passengers  {
+    margin-bottom: 20px;
+}
+
+.selected-passengers {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333; /* Dark text color */
+}
+
+.selected-passengers {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* The same CSS as before */
+
+
+
+/* Add this CSS to style the travel details and passenger details containers */
+.details-container {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+}
+
+
+/* Add this CSS to style the Submit button */
+#submitBtn {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#submitBtn:hover {
+    background-color: #0056b3;
+}
+
+
+
+.travel-details p,
+.passenger-details p {
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+/* Add styles for the travel details block */
+.details-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.travel-details
+{
+  width: 30%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.passenger-details {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.travel-details h3,
+.passenger-details h3 {
+  text-align: center;
+}
+
+/* Add styles for the container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
