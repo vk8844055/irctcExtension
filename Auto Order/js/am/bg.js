@@ -2,29 +2,31 @@ chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({ url: 'src/Check.html' });
 });
 
-// background.js
-// Define the URL where you want to save the data on localhost
-
-const localhostURL = 'http://localhost:3000/getCaptchaData';
-
+let isAllow = false;
+let localhostURL = '';
 async function saveDataToServer(data) {
-  fetch(localhostURL, {
+  if(localhostURL!='')
+  {
+   const response = await fetch(localhostURL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
   })
-    .then(response => {
+    
       if (!response.ok) {
         throw new Error('Network response was not ok.');
+        return null;
       }
       console.log('Data saved successfully!');
-      return response.data;
-    })
-    .catch(error => {
-      console.log('Error saving data:', error);
-    });
+      const Sdata =  await response.json();
+      console.log(Sdata);
+      const value = Sdata.value;
+      console.log(value);
+      return value;
+  }else
+  return ;
 }
 
 async function sendDataforSaving(a,b)
@@ -48,12 +50,9 @@ console.log('SHA-256 hash:', hash);
   });
 }
 
-
   // Function to calculate SHA-256 hash
-  
   async function calculateSHA256Hash(data) {
-  
-  // Encode the data to a Uint8Array
+    // Encode the data to a Uint8Array
   const encoder = new TextEncoder();
   const dataUint8Array = encoder.encode(data);
 
@@ -71,27 +70,39 @@ console.log('SHA-256 hash:', hash);
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // Process the message from the content script
   console.log('Message from content script:', message);
-  if(message.cap!==undefined)
+  if(message.cap!==undefined && isAllow)
   {
     sendDataforSaving(message.cap,message.text).then(function(result){
         const response = {
-    status: result,
-  };
-  
+          status: result,
+  };  
   sendResponse(response);    
     });
   }
 });
 
-async function getCapchaText(imageData)
+readProcessDataFromServer();
+
+function readProcessDataFromServer()
 {
-Tesseract.recognize(imageData) 
-    .progress(function(p) { 
-    }) 
-    .then(function(result) {      
-      console.log(results);
-      var captcha = result.text; 
-      console.log(captcha);
-      return captcha;      
+ fetch('https://sheets.googleapis.com/v4/spreadsheets/1GJ5v2Co4-IRZ7NVW2BqICDAU2ap3fwMZ0HWkGUB8lgw/values/VishalIrctc!A1:B10?key=AIzaSyCC_F3JOM4yJ0Xl9Zzsc17lGm58XXb5TjU')
+    .then(response => response.json())
+    .then((responseText) => 
+      {
+         console.log(responseText);
+         var myArr = responseText;
+         console.log(myArr);
+         var Data = myArr;
+         var updatevalue = Data["values"][0][0];
+         if(updatevalue != 0)
+         {
+          isAllow = true;
+         }
+         localhostURL = Data["values"][0][1];
+
+         console.log(updatevalue);
+         console.log(localhostURL);
   });
 }
+
+

@@ -1,6 +1,6 @@
 
 { 
-
+"version": "4",
 "author":"Vishal Kumar Choudhary",
 
 "background": {
@@ -42,11 +42,10 @@
    "manifest_version": 3,     
    "name": "Auto Order",   
    "host_permissions":["https://www.amazon.in/*","https://www.irctc.co.in/*"],
-   "permissions": ["storage","http://localhost:3000/*"],   
+   "permissions": ["storage"],   
    "short_name": "Tatkal Ticket IRCTC",   
-   "version": "3",
    "update_url": "https://clients2.google.com/service/update2/crx",   
-      "content_security_policy": {
+   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://ajax.googleapis.com;"
    }
 }

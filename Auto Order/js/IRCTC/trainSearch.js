@@ -2,13 +2,15 @@ let travelDetails = {
   source: "",
   destination: "",
   date: "",
-  class: ""
+  clas: "",
+  jQuota:""
 };
 
 let sourceElement;
 let destinationElement;
 let dateElement;
-let classElement;
+let clasElement;
+let jQuotaElement;
 
 var boolStartStop = true;
 
@@ -53,8 +55,17 @@ function TrainSearch()
 	sourceElement = document.getElementsByClassName("ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input ng-star-inserted")[0];
 	destinationElement = document.getElementsByClassName("ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input ng-star-inserted")[1];
 	dateElement = document.getElementsByClassName("ui-inputtext ui-widget ui-state-default ui-corner-all ng-star-inserted")[2];
-	classElement = document.getElementsByClassName("ui-dropdown ui-widget ui-state-default ui-corner-all")[1];
-	GetData();
+	clasElement =  document.getElementById("journeyClass");
+	jQuotaElement = document.getElementById("journeyQuota");
+
+	
+	try
+	{
+		GetData();	
+	}catch(err)
+	{
+
+	}
 }
 
 function storeData()
@@ -65,7 +76,9 @@ function storeData()
   		travelDetails.source = sourceElement.value;
   		travelDetails.destination = destinationElement.value;
   		travelDetails.date = dateElement.value;
-  		travelDetails.class = classElement.value;
+  		travelDetails.clas = clasElement.querySelector('input').getAttribute("aria-label");
+  		travelDetails.jQuota = jQuotaElement.querySelector('input').getAttribute("aria-label");
+  		console.log(travelDetails);
 	  	chrome.storage.sync.set({ travelDetails: travelDetails }, function () {
 	  	console.log(travelDetails);
     	console.log("Updated travel details saved to storage.");
@@ -83,6 +96,8 @@ if(data.travelDetails) {
 	travelDetails.source = data.travelDetails.source;
 	travelDetails.destination = data.travelDetails.destination;
 	travelDetails.date =data.travelDetails.date;
+	travelDetails.clas =data.travelDetails.clas;
+	travelDetails.jQuota =data.travelDetails.jQuota;
 }
   addControlToTheDocuments();
   //applyButtonStyles();
@@ -91,10 +106,60 @@ if(data.travelDetails) {
 
 function FillData()
 {
+	var clsV = clasElement.querySelector('input').getAttribute("aria-label");
+	var jQV = jQuotaElement.querySelector('input').getAttribute("aria-label");
+	
+	if(jQV != travelDetails.jQuota)
+	{
+		//updateElementValue1(jQuotaElement, travelDetails.jQuota).then(result => {
+		if(clsV!=travelDetails.clas)
+		{
+			setTimeout(function(){
+			updateElementValue1(clasElement, travelDetails.clas).then(result => {
+			setTimeout(function(){
+				FillDataLast();
+			},12);	
+			});
+		},25);	
+		}else{
+				FillDataLast();
+		}
+			//});
+	}else
+	{
+		FillDataLast();
+	}
+}
+function FillDataLast(f=true){
   updateElementValue(sourceElement,travelDetails.source);
   updateElementValue(destinationElement,travelDetails.destination);
   updateElementValue(dateElement, travelDetails.date);
-}
+  var jQV = jQuotaElement.querySelector('input').getAttribute("aria-label");
+  if(jQV != travelDetails.jQuota)
+  {
+  setTimeout(()=>{
+  updateElementValue1(jQuotaElement, travelDetails.jQuota);
+	},2);
+  }
+ }
+
+
+async function updateElementValue1(Element,data)
+{
+if(Element){
+Element.querySelector('div[role="button"]').click();		
+return new Promise((resolve, reject) => {
+        // Simulating an action with a delay
+        setTimeout(() => {
+      		var listItem = Element.querySelector('li[aria-label="'+data+'"]');
+					if(listItem){
+						console.log(listItem);
+							listItem.click();
+							resolve("done");
+					}
+        }, 10);
+  });
+}}
 
  function changeTravalData()
   {
@@ -120,8 +185,11 @@ function updateElementValue(Element,data,isChange = false)
 			Element.dispatchEvent(new Event('input'));
 		}else
 		{
-			Element.value = data;
-			Element.dispatchEvent(new Event('change'));
+			if(data!='')
+			{
+				Element.value = data;
+				Element.dispatchEvent(new Event('change'));
+			}		
 		}
 	}
 }
@@ -248,3 +316,4 @@ function findPostion()
 }
 
 findPostion();
+
