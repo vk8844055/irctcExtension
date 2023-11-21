@@ -112,24 +112,37 @@ function displaySelectedPassengers() {
 }
 
 // Travel details object with pre-filled data
-const travelDetails = {
-    source: "New York",
-    destination: "Los Angeles",
+var travelDetails = {
+    source: "DELHI - DLI (NEW DELHI)",
+    destination: "AGRA CANTT - AGC (AGRA)",
     date: "2023-07-25",
-    class: "First Class"
+    clas: "First Class",
+    confirmBirth:false
 };
 
 // Function to display travel details
 function displayTravelDetails() {
   chrome.storage.sync.get("travelDetails", function (data) {
+  console.log("123141");
   console.log(data);
-  travelDetails.source = data.travelDetails.source;
-  travelDetails.destination = data.travelDetails.destination;
-  travelDetails.date = data.travelDetails.date;
+  if(data === undefined)
+  {
+    initializeTravralsDetails();
+    return;
+  }
+  if(data.travelDetails === undefined)
+  {
+    initializeTravralsDetails();
+    return;
+  }
+  travelDetails = data.travelDetails;
+
+  console.log(travelDetails);
   document.getElementById("source").innerText = travelDetails.source;
   document.getElementById("destination").innerText = travelDetails.destination;
   document.getElementById("date").innerText = travelDetails.date;
-  document.getElementById("class").innerText = travelDetails.class;
+  document.getElementById("class").innerText = travelDetails.clas;
+  document.getElementById("confirmBirth").checked = travelDetails.confirmBirth;
 });
   
 }
@@ -143,7 +156,18 @@ submitButton.addEventListener("click", function () {
     displaySelectedPassengers();
 });
 
+function initializeTravralsDetails()
+{
+    chrome.storage.sync.set({travelDetails:travelDetails}, function (data) {});
+    displayTravelDetails();
+}
 // Display travel details on page load
 
 displayTravelDetails();
 displaySelectedPassengers()
+
+document.getElementById("confirmBirth").addEventListener('change', function() {
+    travelDetails.confirmBirth = document.getElementById("confirmBirth").checked;
+    chrome.storage.sync.set({travelDetails:travelDetails}, function (data) {});
+});
+   

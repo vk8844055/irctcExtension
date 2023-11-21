@@ -93,11 +93,7 @@ function GetData()
 chrome.storage.sync.get("travelDetails", function (data) {
 console.log(data)
 if(data.travelDetails) {
-	travelDetails.source = data.travelDetails.source;
-	travelDetails.destination = data.travelDetails.destination;
-	travelDetails.date =data.travelDetails.date;
-	travelDetails.clas =data.travelDetails.clas;
-	travelDetails.jQuota =data.travelDetails.jQuota;
+	travelDetails = data.travelDetails;
 }
   addControlToTheDocuments();
   //applyButtonStyles();
@@ -229,35 +225,36 @@ function FillPassenerDetails()
 		console.log(data.PassengersDetails);
 		var pass = data.PassengersDetails;
 		
+		var addPassengerControl = document.getElementsByClassName("zeroPadding pull-left ng-star-inserted")[0].children[0];
+  	let passName = document.querySelectorAll("input[placeholder*='Passenger Name']");
+  	while(totalPassenger > passName.length)
+  	{
+  		addPassengerControl.click();
+  		passName = document.querySelectorAll("input[placeholder*='Passenger Name']");
+  	}
+  	
+    var passAge = document.querySelectorAll("input[formcontrolname*='passengerAge']");
+    var passGender = document.querySelectorAll("select[formcontrolname*='passengerGender']");
+    var passBerthChoice = document.querySelectorAll("select[formcontrolname*='passengerBerthChoice']")
+    var passfoodChoice = document.querySelectorAll("select[formcontrolname*='passengerFoodChoice']");
 
-					var addPassengerControl = document.getElementsByClassName("zeroPadding pull-left ng-star-inserted")[0].children[0];
-        	let passName = document.querySelectorAll("input[placeholder*='Passenger Name']");
-        	while(totalPassenger > passName.length)
-        	{
-        		addPassengerControl.click();
-        		passName = document.querySelectorAll("input[placeholder*='Passenger Name']");
-        	}
-        	
-          var passAge = document.querySelectorAll("input[formcontrolname*='passengerAge']");
-          var passGender = document.querySelectorAll("select[formcontrolname*='passengerGender']");
-          var passBerthChoice = document.querySelectorAll("select[formcontrolname*='passengerBerthChoice']")
-          var passfoodChoice = document.querySelectorAll("select[formcontrolname*='passengerFoodChoice']");
+    var selectElement = document.querySelectorAll("[formcontrolname='passengerBerthChoice']")[0];
+		const optionValues = Array.from(selectElement.options).map(option => option.value).filter(value => value !== "");
+		console.log(optionValues);
 
-          var selectElement = document.querySelectorAll("[formcontrolname='passengerBerthChoice']")[0];
-					const optionValues = Array.from(selectElement.options).map(option => option.value).filter(value => value !== "");
-					console.log(optionValues);
-
-          for( var i = 0; i < totalPassenger; i++)
-          {
-          	updateElementValue(passName[i],pass[i].name);
-          	updateElementValue(passAge[i],pass[i].age);
-          	updateElementValue(passfoodChoice[i],pass[i].foodChoice,true);
-          	updateElementValue(passGender[i],pass[i].gender,true);
-          	
-          	if(optionValues.indexOf(pass[i].berthChoice) != -1)
-          	updateElementValue(passBerthChoice[i],pass[i].berthChoice,true);
-          }
-        });
+    for( var i = 0; i < totalPassenger; i++)
+    {
+    	updateElementValue(passName[i],pass[i].name);
+    	updateElementValue(passAge[i],pass[i].age);
+    	updateElementValue(passfoodChoice[i],pass[i].foodChoice,true);
+    	updateElementValue(passGender[i],pass[i].gender,true);
+    	
+    	if(optionValues.indexOf(pass[i].berthChoice) != -1)
+    	updateElementValue(passBerthChoice[i],pass[i].berthChoice,true);
+    }
+  });
+		
+	document.getElementById("confirmberths").checked = travelDetails.confirmBirth;
 }
 
 
