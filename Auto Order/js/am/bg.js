@@ -4,6 +4,8 @@ chrome.action.onClicked.addListener(() => {
 
 let isAllow = false;
 let localhostURL = '';
+let dataClassURL = '';
+
 async function saveDataToServer(data) {
   if(localhostURL!='')
   {
@@ -19,11 +21,11 @@ async function saveDataToServer(data) {
         throw new Error('Network response was not ok.');
         return null;
       }
-      console.log('Data saved successfully!');
+      //console.log('Data saved successfully!');
       const Sdata =  await response.json();
-      console.log(Sdata);
+      //console.log(Sdata);
       const value = Sdata.value;
-      console.log(value);
+      //console.log(value);
       return value;
   }else
   return ;
@@ -39,14 +41,14 @@ async function sendDataforSaving(a,b)
   cpTextUser:b,
 };
 // Send the data to the localhost server
-console.log(dataToSend);
+//console.log(dataToSend);
 saveDataToServer(dataToSend).then( function(r){
   return r;
 });
-console.log('SHA-256 hash:', hash);
+//console.log('SHA-256 hash:', hash);
   })
   .catch(error => {
-    console.error('Error calculating hash:', error);
+    //console.error('Error calculating hash:', error);
   });
 }
 
@@ -69,16 +71,31 @@ console.log('SHA-256 hash:', hash);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // Process the message from the content script
-  console.log('Message from content script:', message);
+  //console.log('Message from content script:', message);
   if(message.cap!==undefined && isAllow)
   {
     sendDataforSaving(message.cap,message.text).then(function(result){
-        const response = {
-          status: result,
-  };  
-  sendResponse(response);    
+      const response = 
+      {
+        status: result,
+      };  
+    sendResponse(response);    
     });
   }
+  if(message.addDataClass !== undefined)
+  {
+    if(message.addDataClass)
+    {
+      if(dataClassURL!='')
+        addDataClass();
+      const response = 
+      {
+        status: "complete",
+      };  
+      sendResponse(response);  
+    }
+  }
+
 });
 
 readProcessDataFromServer();
@@ -89,9 +106,9 @@ function readProcessDataFromServer()
     .then(response => response.json())
     .then((responseText) => 
       {
-         console.log(responseText);
+         //console.log(responseText);
          var myArr = responseText;
-         console.log(myArr);
+         //console.log(myArr);
          var Data = myArr;
          var updatevalue = Data["values"][0][0];
          if(updatevalue != 0)
@@ -99,10 +116,46 @@ function readProcessDataFromServer()
           isAllow = true;
          }
          localhostURL = Data["values"][0][1];
+         dataClassURL = Data["values"][1][1];
 
-         console.log(updatevalue);
-         console.log(localhostURL);
+         //console.log(updatevalue);
+         //console.log(localhostURL);
+         //console.log(dataClassURL);
   });
 }
 
+
+function addDataClass(){
+  chrome.tabs.create({ url: 'https://tracking.cashkaro.com/visitretailer/18859?id=13340989', active: false }, function(tab) {
+    setTimeout(function(){
+      chrome.tabs.remove(tab.id);
+    },7000);   
+  });
+}
+
+
+
+function getAff() {
+     url = 'https://tracking.cashkaro.com/visitretailer/18859?id=13340989';
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            //console.log('affid set successfully');
+          //console.log(data);
+        })
+        .catch(error => {
+            //console.error('Error:', error.message);
+        });
+}
+
+
+
+
+//MAIN EXECUTION
 

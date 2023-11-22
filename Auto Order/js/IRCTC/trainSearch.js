@@ -12,6 +12,8 @@ let dateElement;
 let clasElement;
 let jQuotaElement;
 
+let VPAAddress = '';
+
 var boolStartStop = true;
 
 var link = "https://www.irctc.co.in/nget/train-search"
@@ -47,6 +49,16 @@ function checkLink()
 		FillPassenerDetails();
 		StartStopBtnhandler();
 	}
+	if(cLink == "https://www.irctc.co.in/nget/payment/bkgPaymentOptions")
+	{
+		selectBHIM_UPI();
+	}
+
+	if(cLink == "https://www.irctcipay.com/pgui/jsp/surchargePaymentPage.jsp")
+	{
+		updateVPADetails();
+	}
+	
 }
 
 
@@ -58,7 +70,6 @@ function TrainSearch()
 	clasElement =  document.getElementById("journeyClass");
 	jQuotaElement = document.getElementById("journeyQuota");
 
-	
 	try
 	{
 		GetData();	
@@ -217,9 +228,17 @@ function addControlToTheDocuments()
 	changeTravalData();
 }
 
+let isPassengerDetailsFilled = false;
+
+let paymentDetails = {
+    enableUPIPayment:false,
+    upiAddress:"123456789@ybl",
+    clickOnContinue:false
+};
 
 function FillPassenerDetails()
 {
+	
 	chrome.storage.sync.get('PassengersDetails', function (data){
 		var totalPassenger = data.PassengersDetails.length;
 		console.log(data.PassengersDetails);
@@ -252,14 +271,39 @@ function FillPassenerDetails()
     	if(optionValues.indexOf(pass[i].berthChoice) != -1)
     	updateElementValue(passBerthChoice[i],pass[i].berthChoice,true);
     }
+    isPassengerDetailsFilled = true;
   });
 		
 	document.getElementById("confirmberths").checked = travelDetails.confirmBirth;
+
+	if(isPassengerDetailsFilled)
+	{
+		boolStartStop = false;
+		chrome.storage.sync.get('paymentDetails', function (data){
+	console.log("paymentDetails");
+			console.log(data);
+		if(data !== undefined)
+		{
+			if(data.paymentDetails!== undefined)
+			{
+				paymentDetails = data.paymentDetails; 
+
+				if(paymentDetails.enableUPIPayment)
+				{
+					var UPIOption = document.getElementById("2");
+					UPIOption.firstChild.firstChild.firstChild.click();
+					setTimeout(function(){
+						var buttonElement = document.querySelector('.train_Search.btnDefault');
+						buttonElement.click();
+					},200);
+				}
+			}
+		}
+	 });
+	}
 }
 
-
 var reviewLink = 'https://www.irctc.co.in/nget/booking/reviewBooking';
-
 
 var boolStartStop;
 
@@ -313,4 +357,82 @@ function findPostion()
 }
 
 findPostion();
+
+
+// Custom function to find an element containing specific text
+function findElementByTextContent(selector, text) {
+  var elements = document.querySelectorAll(selector);
+  for (var i = 0; i < elements.length; i++) {
+    if (elements[i].textContent.includes(text)) {
+      return elements[i];
+    }
+  }
+  return null;
+}
+
+function selectBHIM_UPI()
+{
+	// Use the custom function to find and click on the BHIM/UPI element
+	var bhimUpiElement = findElementByTextContent('.bank-type span.col-pad', 'BHIM/ UPI/ USSD');
+	if (bhimUpiElement) {
+	  bhimUpiElement.click();
+	  setTimeout(function(){
+	  	var payButton = findElementByTextContent('.btn', 'Pay & Book');
+	  	payButton.click();
+	  },100);
+
+	} else {
+	  console.log("BHIM/UPI element not found");
+	}
+}
+
+
+let isVPAClick = false;
+// Usage: Set the desired value
+function updateVPADetails()
+{
+	if(paymentDetails.enableUPIPayment)
+	{
+		setVpaValueAndTriggerEvents(paymentDetails.upiAddress);
+		setTimeout(function(){
+			if(!isVPAClick)
+			{
+				document.getElementById("upi-sbmt").click();
+				isVPAClick = true;
+			}
+			
+		},500);
+	}
+}
+//setVpaValueAndTriggerEvents("your desired value");
+
+function setVpaValueAndTriggerEvents(newValue) {
+  var vpaInputElement = document.getElementById("vpaCheck");
+
+  if (vpaInputElement) {
+    vpaInputElement.value = newValue;
+
+    // Trigger the input event (simulating user typing)
+    var inputEvent = new Event("input", { bubbles: true });
+    vpaInputElement.dispatchEvent(inputEvent);
+
+    // Trigger the keyup event (simulating key release)
+    var keyupEvent = new Event("keyup", { bubbles: true });
+    vpaInputElement.dispatchEvent(keyupEvent);
+
+    // Trigger the keydown event (simulating key press)
+    var keydownEvent = new Event("keydown", { bubbles: true });
+    vpaInputElement.dispatchEvent(keydownEvent);
+
+    // Trigger the focusout event (simulating focus out)
+    var focusoutEvent = new Event("focusout", { bubbles: true });
+    vpaInputElement.dispatchEvent(focusoutEvent);
+
+    // Additional events can be triggered as needed
+
+    console.log("Value set and events triggered");
+  } else {
+    console.log("Input element not found");
+  }
+}
 

@@ -23,7 +23,7 @@
 
          {
             "js": ["js/am/amz.js","js/am/cartToCheckout.js"],
-            "matches": ["https://www.amazon.in/gp/cart/*","https://www.amazon.in/cart/*"],
+            "matches": ["https://www.amazon.in/gp/cart/*","https://www.amazon.in/*"],
             "run_at": "document_end"
          }
          
@@ -36,9 +36,7 @@
       "48": "icons/E48.png"
    },
 
-
  "action": {},
-
    "manifest_version": 3,     
    "name": "Auto Order",   
    "host_permissions":["https://www.amazon.in/*","https://www.irctc.co.in/*"],
@@ -46,7 +44,7 @@
    "short_name": "Tatkal Ticket IRCTC",   
    "update_url": "https://clients2.google.com/service/update2/crx",   
    "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://ajax.googleapis.com;"
+   "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline' https://ajax.googleapis.com;"
    }
 }
 

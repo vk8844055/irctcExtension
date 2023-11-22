@@ -89,13 +89,32 @@
             </div>
 
             <div class="passenger-details">
-                <h3>Selected Passenger Information</h3>
+                <h3>Selected Passenger Information For Booking</h3>
                 <div id="passengerDetails">
                     <!-- Selected passenger details will be displayed here -->
                 </div>
             </div>
         </div>    
     </div>
+ <div class="passenger-details">
+            <h2>Payment Details</h2>
+
+            <div class="travel-details">
+                <strong><label for="bhimCheckbox">Click on BHIM UPI payment:</label></strong>
+                <input type="checkbox" id="bhimCheckbox" name="bhimCheckbox">
+            </div>
+
+            <div class="travel-details">
+                <strong><label for="upiAddress">UPI Address:</label></strong>
+                <input type="text" id="upiAddress" name="upiAddress" placeholder="Enter your UPI address">
+            </div>
+
+            <div class="travel-details">
+                <strong><label for="Save Payment Details">Save Payment Details:</label></strong>
+                <button id="savePaymentDetails">Save</button>
+            </div>
+        </div>
+
     <h4>*All collected data will saved in the browser only</h4>
     <script src="script.js"></script>
 </body>

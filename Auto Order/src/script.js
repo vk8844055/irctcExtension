@@ -161,13 +161,55 @@ function initializeTravralsDetails()
     chrome.storage.sync.set({travelDetails:travelDetails}, function (data) {});
     displayTravelDetails();
 }
-// Display travel details on page load
+
+var paymentDetails = {
+    enableUPIPayment:false,
+    upiAddress:"123456789@ybl",
+    clickOnContinue:false
+};
+
+function initializePaymentDetails()
+{
+ chrome.storage.sync.set({paymentDetails:paymentDetails}, function (data) {});
+ displayPaymentDetails();   
+}
+
+
+function displayPaymentDetails() {
+  chrome.storage.sync.get("paymentDetails", function (data) {
+    console.log("123");
+    console.log(data);
+    if(data === undefined)
+    {
+        initializePaymentDetails();
+        return;
+    }
+    if(data.paymentDetails === undefined)
+    {
+        initializePaymentDetails();
+        return;
+    }
+    
+    paymentDetails = data.paymentDetails;
+    document.getElementById("upiAddress").value = paymentDetails.upiAddress;
+    document.getElementById("bhimCheckbox").checked = paymentDetails.enableUPIPayment;
+  })
+}
 
 displayTravelDetails();
-displaySelectedPassengers()
+displaySelectedPassengers();
+displayPaymentDetails();
 
 document.getElementById("confirmBirth").addEventListener('change', function() {
     travelDetails.confirmBirth = document.getElementById("confirmBirth").checked;
     chrome.storage.sync.set({travelDetails:travelDetails}, function (data) {});
 });
+
+document.getElementById("savePaymentDetails").addEventListener('click', function() {
+    paymentDetails.upiAddress = document.getElementById("upiAddress").value;
+     paymentDetails.enableUPIPayment = document.getElementById("bhimCheckbox").checked ;
+    chrome.storage.sync.set({paymentDetails:paymentDetails}, function (data) {});
+});
+
    
+   //savePaymentDetails
