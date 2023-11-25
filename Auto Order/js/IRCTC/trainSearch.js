@@ -370,12 +370,14 @@ function findElementByTextContent(selector, text) {
   return null;
 }
 
+var nextClickAfter = 0;
 function selectBHIM_UPI()
 {
+	nextClickAfter = nextClickAfter-1;
 	// Use the custom function to find and click on the BHIM/UPI element
-	var bhimUpiElement = findElementByTextContent('.bank-type span.col-pad', 'BHIM/ UPI/ USSD');
-	if (bhimUpiElement) {
-	  bhimUpiElement.click();
+	//var bhimUpiElement = findElementByTextContent('.bank-type span.col-pad', 'BHIM/ UPI/ USSD');
+	if (nextClickAfter <=0 ) {
+	  nextClickAfter = 5;
 	  setTimeout(function(){
 	  	var payButton = findElementByTextContent('.btn', 'Pay & Book');
 	  	payButton.click();

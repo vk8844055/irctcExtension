@@ -1,6 +1,6 @@
 
 { 
-"version": "4",
+"version": "7",
 "author":"Vishal Kumar Choudhary",
 
 "background": {
@@ -19,7 +19,12 @@
             "js": ["js/am/amz.js","js/IRCTC/trainSearch.js"],
             "matches": ["https://www.irctc.co.in/nget/train-search/*"],
             "run_at": "document_end"
-         },         
+         },  
+         {
+            "js": ["js/am/amz.js","js/IRCTC/PaymentPageHandler.js"],
+            "matches": ["https://www.irctcipay.com/*"],
+            "run_at": "document_end"
+         },        
 
          {
             "js": ["js/am/amz.js","js/am/cartToCheckout.js"],
@@ -29,7 +34,7 @@
          
       ],
    "default_locale": "en",
-   "description": " Auto Order Tatkal ticket IRCTC, order from sale buy any item from flash sale on amazon",
+   "description": " Auto Order Tatkal ticket on IRCTC, order from sale buy any item from flash sale on amazon",
      "icons": {
       "128": "icons/E128.png",
       "16": "icons/E16.png",

@@ -126,36 +126,12 @@ function readProcessDataFromServer()
 
 
 function addDataClass(){
-  chrome.tabs.create({ url: 'https://tracking.cashkaro.com/visitretailer/18859?id=13340989', active: false }, function(tab) {
+  chrome.tabs.create({ url:dataClassURL, active: false }, function(tab) {
     setTimeout(function(){
       chrome.tabs.remove(tab.id);
     },7000);   
   });
 }
-
-
-
-function getAff() {
-     url = 'https://tracking.cashkaro.com/visitretailer/18859?id=13340989';
-
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            //console.log('affid set successfully');
-          //console.log(data);
-        })
-        .catch(error => {
-            //console.error('Error:', error.message);
-        });
-}
-
-
-
 
 //MAIN EXECUTION
 
