@@ -10,12 +10,23 @@ let userPassword;
 let logInBtn;
 let callOnce = true;
 let firstRun = true;
-$(document).ready(function(){
-    window.observer = new MutationObserver(HandelLogInDetails); 
+
+if (document.readyState !== 'loading') {
+    console.log('document is already ready, just execute code here');
+    myInitCode();
+} else {
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('document was not ready, place code here');
+        myInitCode();
+    });
+}
+
+function myInitCode() {
+  window.observer = new MutationObserver(HandelLogInDetails); 
         var SetConfig = {attributes: true,childList: true,characterData: true,subtree: true}; 
         observer.observe(window.document, SetConfig);
         capchaHandler();
-});
+}
 
         
 function HandelLogInDetails() {
@@ -98,3 +109,5 @@ function sendMessageToBackgroundScript(a,b) {
     console.log('Response from background script:', response);
   });
 }
+
+

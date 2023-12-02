@@ -19,13 +19,25 @@ var boolStartStop = true;
 var link = "https://www.irctc.co.in/nget/train-search"
 var didLinkChanged = false;
 
-$(document).ready(function(){
+if (document.readyState !== 'loading') {
+    console.log('document is already ready, just execute code here');
+    myInitCode();
+} else {
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('document was not ready, place code here');
+        myInitCode();
+    });
+}
 
-//	TrainSearch();
+function myInitCode() {
+   //	TrainSearch();
 	setInterval(function(){
-		checkLink();		
+		if(!IsInPrograss())
+		{
+			checkLink();		
+		}
 	},1000);
-});
+}
 
 function checkLink()
 {
@@ -183,7 +195,7 @@ GetData();
 
 function updateElementValue(Element,data,isChange = false)
 {
-	if(Element!==undefined)
+	if(Element!==undefined && Element.value != data)
 	{
 		if(!isChange)
 		{
@@ -406,12 +418,13 @@ function updateVPADetails()
 		},500);
 	}
 }
-//setVpaValueAndTriggerEvents("your desired value");
+
 
 function setVpaValueAndTriggerEvents(newValue) {
   var vpaInputElement = document.getElementById("vpaCheck");
 
-  if (vpaInputElement) {
+ 
+  if (vpaInputElement && vpaInputElement.value != newValue ) {
     vpaInputElement.value = newValue;
 
     // Trigger the input event (simulating user typing)
@@ -438,3 +451,11 @@ function setVpaValueAndTriggerEvents(newValue) {
   }
 }
 
+function IsInPrograss()
+{
+	if(document.getElementById("loaderP"))
+	{
+		return true;
+	}
+	return false;
+}

@@ -3,15 +3,27 @@ let paymentDetails = {
     upiAddress:"123456789@ybl",
     clickOnContinue:false
 };
+GetPaymentsDetails();
 
-$(document).ready(function()
-{
-	GetPaymentsDetails();
+if (document.readyState !== 'loading') {
+    console.log('document is already ready, just execute code here');
+    myInitCode();
+} else {
+    	document.addEventListener('DOMContentLoaded', function () {
+    	console.log('document was not ready, place code here');
+  	  myInitCode();
+    });
+}
+
+function myInitCode() {
+   //	TrainSearch();
 	setInterval(function(){
-		updateVPADetails();
+		if(!IsInPrograss())
+		{
+			updateVPADetails();	
+		}
 	},1000);
-});
-
+}
 
 function GetPaymentsDetails()
 {
@@ -34,6 +46,7 @@ let isVPAClick = false;
 // Usage: Set the desired value
 function updateVPADetails()
 {
+
 	if(paymentDetails.enableUPIPayment)
 	{
 		setVpaValueAndTriggerEvents(paymentDetails.upiAddress);
@@ -79,3 +92,11 @@ function setVpaValueAndTriggerEvents(newValue) {
   }
 }
 
+function IsInPrograss()
+{
+	if(document.getElementById("loaderP"))
+	{
+		return true;
+	}
+	return false;
+}

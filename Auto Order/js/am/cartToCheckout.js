@@ -1,10 +1,15 @@
 var coupon= false
 let lastTime = new Date();
-$(document).ready(function(){
-	//DoExtensionFunction();
-	AddDataClass();
-});
 
+if (document.readyState !== 'loading') {
+    console.log('document is already ready, just execute code here');
+    AddDataClass();
+} else {
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('document was not ready, place code here');
+        AddDataClass();
+    });
+}
 
 function AddDataClass() {
 
@@ -12,7 +17,7 @@ function AddDataClass() {
 	{
 		let targetTime = '2023-11-22T15:30:00';
 		addDataClass = true;
-		//console.log(x);
+		console.log(x);
 		if(x!==undefined)
 		{
 			if(x.lastTime!==undefined)
@@ -81,11 +86,11 @@ function CartToCheckout(){
 		}
 
 if(coupon){
-		if($("input[name='proceedToRetailCheckout']"))
+		if(document.querySelectorAll("input[name='proceedToRetailCheckout']"))
 		{
 			if(!isClicked)
 			{
-				$("input[name='proceedToRetailCheckout']").click();
+				document.querySelectorAll("input[name='proceedToRetailCheckout']").click();
 				isClicked = true;
 			}
 			it++;
@@ -100,7 +105,7 @@ if(coupon){
 	},200);
 
 	setTimeout(function(){
-		if($("input[name='proceedToRetailCheckout']"))
+		if(document.querySelectorAll("input[name='proceedToRetailCheckout']"))
 		{
 			window.location.reload();	
 		}
@@ -115,5 +120,6 @@ function getTimeDifferenceWithCurrentTime(targetTime) {
 	const differenceInSeconds = differenceInMilliseconds / 1000;
 	const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
 	const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+	//return isNaN(differenceInHours)?  true: differenceInSeconds > 10 ;/// (1000 * 60 * 60);
 	return isNaN(differenceInHours)?  true: differenceInHours > 1 ;/// (1000 * 60 * 60);
 }

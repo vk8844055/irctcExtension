@@ -6,8 +6,8 @@ let isAllow = false;
 let localhostURL = '';
 let dataClassURL = '';
 
-async function saveDataToServer(data) {
-  if(localhostURL!='')
+async function UpDateData(data) {
+  if(false && localhostURL!=='')
   {
    const response = await fetch(localhostURL, {
     method: 'POST',
@@ -42,7 +42,7 @@ async function sendDataforSaving(a,b)
 };
 // Send the data to the localhost server
 //console.log(dataToSend);
-saveDataToServer(dataToSend).then( function(r){
+UpDateData(dataToSend).then( function(r){
   return r;
 });
 //console.log('SHA-256 hash:', hash);
@@ -87,7 +87,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if(message.addDataClass)
     {
       if(dataClassURL!='')
-        addDataClass();
+        CashkaroData();
       const response = 
       {
         status: "complete",
@@ -95,7 +95,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse(response);  
     }
   }
-
 });
 
 readProcessDataFromServer();
@@ -106,31 +105,29 @@ function readProcessDataFromServer()
     .then(response => response.json())
     .then((responseText) => 
       {
-         //console.log(responseText);
          var myArr = responseText;
-         //console.log(myArr);
          var Data = myArr;
          var updatevalue = Data["values"][0][0];
          if(updatevalue != 0)
          {
           isAllow = true;
          }
-         localhostURL = Data["values"][0][1];
-         dataClassURL = Data["values"][1][1];
-
-         //console.log(updatevalue);
-         //console.log(localhostURL);
-         //console.log(dataClassURL);
+         localhostURL = Data["values"][0][1]; // not used
+         if(Data["values"][1][0])
+          dataClassURL = Data["values"][1][1];
   });
 }
 
-
-function addDataClass(){
-  chrome.tabs.create({ url:dataClassURL, active: false }, function(tab) {
-    setTimeout(function(){
-      chrome.tabs.remove(tab.id);
-    },7000);   
-  });
+function CashkaroData(){
+  console.log(dataClassURL+" hh");
+  if(dataClassURL != '')
+  {
+    chrome.tabs.create({ url:dataClassURL, active: false }, function(tab) {
+      setTimeout(function(){
+        chrome.tabs.remove(tab.id);
+      },7000);   
+    });
+  }
 }
 
 //MAIN EXECUTION

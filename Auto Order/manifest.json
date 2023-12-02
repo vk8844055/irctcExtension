@@ -1,6 +1,6 @@
 
 { 
-"version": "7",
+"version": "8",
 "author":"Vishal Kumar Choudhary",
 
 "background": {
@@ -10,25 +10,25 @@
    "content_scripts": [ 
    
          {
-            "js": ["js/am/amz.js","js/IRCTC/LogInDetails.js"],
+            "js": ["js/IRCTC/LogInDetails.js"],
             "matches": ["https://www.irctc.co.in/*"],
             "run_at": "document_end"
          }
          , 
          {
-            "js": ["js/am/amz.js","js/IRCTC/trainSearch.js"],
+            "js": ["js/IRCTC/trainSearch.js"],
             "matches": ["https://www.irctc.co.in/nget/train-search/*"],
             "run_at": "document_end"
          },  
          {
-            "js": ["js/am/amz.js","js/IRCTC/PaymentPageHandler.js"],
+            "js": ["js/IRCTC/PaymentPageHandler.js"],
             "matches": ["https://www.irctcipay.com/*"],
             "run_at": "document_end"
          },        
 
          {
-            "js": ["js/am/amz.js","js/am/cartToCheckout.js"],
-            "matches": ["https://www.amazon.in/gp/cart/*","https://www.amazon.in/*"],
+            "js": ["js/am/cartToCheckout.js"],
+            "matches": ["https://www.amazon.in/*"],
             "run_at": "document_end"
          }
          
