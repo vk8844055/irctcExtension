@@ -1,8 +1,16 @@
+
+const paymentMode = Object.freeze({ 
+  	OFF:0,
+    UPI: 1, 
+    IRCTC_WALLET: 2
+}); 
+
+
 let paymentDetails = {
-    enableUPIPayment:false,
+    enableUPIPayment:paymentMode.OFF,
     upiAddress:"123456789@ybl",
-    clickOnContinue:false
-};
+    clickOnContinue:false,
+  };
 GetPaymentsDetails();
 
 if (document.readyState !== 'loading') {
@@ -47,7 +55,7 @@ let isVPAClick = false;
 function updateVPADetails()
 {
 
-	if(paymentDetails.enableUPIPayment)
+	if(paymentDetails.enableUPIPayment==paymentMode.UPI)
 	{
 		setVpaValueAndTriggerEvents(paymentDetails.upiAddress);
 		setTimeout(function(){

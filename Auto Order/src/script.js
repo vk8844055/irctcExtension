@@ -192,7 +192,8 @@ function displayPaymentDetails() {
     
     paymentDetails = data.paymentDetails;
     document.getElementById("upiAddress").value = paymentDetails.upiAddress;
-    document.getElementById("bhimCheckbox").checked = paymentDetails.enableUPIPayment;
+    SetPaymentOption(paymentDetails.enableUPIPayment);
+    //document.getElementById("bhimCheckbox").checked = paymentDetails.enableUPIPayment;
   })
 }
 
@@ -206,10 +207,30 @@ document.getElementById("confirmBirth").addEventListener('change', function() {
 });
 
 document.getElementById("savePaymentDetails").addEventListener('click', function() {
+    
     paymentDetails.upiAddress = document.getElementById("upiAddress").value;
-     paymentDetails.enableUPIPayment = document.getElementById("bhimCheckbox").checked ;
+    
+    paymentDetails.enableUPIPayment = GetPaymentOption() ;
+    
     chrome.storage.sync.set({paymentDetails:paymentDetails}, function (data) {});
 });
 
+function GetPaymentOption()
+{
+ var radios = document.getElementsByName('paymentOptions');
+    // Loop through the radio buttons to find the selected one
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            // Return the value of the selected radio button
+                return radios[i].value;
+        }
+    }
    
-   //savePaymentDetails
+   return 0;   
+}
+
+function SetPaymentOption(op)
+{
+ var radios = document.getElementsByName('paymentOptions');
+ radios[op].checked = true;
+}

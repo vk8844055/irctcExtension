@@ -102,9 +102,17 @@
             <h2>Payment Details</h2>
 
             <div class="form-group">
-                <strong><label for="bhimCheckbox">Click on BHIM UPI payment:</label> <input type="checkbox" id="bhimCheckbox" name="bhimCheckbox"> </strong>
-                
-            </div>
+    <strong><label for="paymentOptions">Select Payment Method:</label></strong>
+    
+    <input type="radio" id="p_off" name="paymentOptions" value="0" checked>
+    <label for="offRadio">Off</label>
+
+    <input type="radio" id="p_upi" name="paymentOptions" value="1">
+    <label for="upiPaymentRadio">UPI Payment</label>
+
+    <input type="radio" id="p_irctcWallet" name="paymentOptions" value="2">
+    <label for="irctcWalletRadio">IRCTC Wallet</label>
+</div>
 
             <div class="form-group">
                 <strong><label for="upiAddress">UPI Address:</label></strong> 

@@ -63,7 +63,10 @@ function checkLink()
 	}
 	if(cLink == "https://www.irctc.co.in/nget/payment/bkgPaymentOptions")
 	{
-		selectBHIM_UPI();
+		if(paymentDetails.enableUPIPayment == paymentMode.UPI)
+			selectBHIM_UPI();
+	if(paymentDetails.enableUPIPayment == paymentMode.IRCTC_WALLET)
+		clickIrctcEWallet()
 	}
 
 	if(cLink == "https://www.irctcipay.com/pgui/jsp/surchargePaymentPage.jsp")
@@ -213,8 +216,6 @@ function updateElementValue(Element,data,isChange = false)
 	}
 }
 
-
-
 function addControlToTheDocuments()
 {
 	var position = document.getElementsByClassName("form-swap col-xs-12 remove-padding")[1];
@@ -242,8 +243,15 @@ function addControlToTheDocuments()
 
 let isPassengerDetailsFilled = false;
 
+
+const paymentMode = Object.freeze({ 
+  	OFF:0,
+    UPI: 1, 
+    IRCTC_WALLET: 2
+}); 
+
 let paymentDetails = {
-    enableUPIPayment:false,
+    enableUPIPayment:paymentMode.OFF,
     upiAddress:"123456789@ybl",
     clickOnContinue:false
 };
@@ -299,16 +307,28 @@ function FillPassenerDetails()
 			if(data.paymentDetails!== undefined)
 			{
 				paymentDetails = data.paymentDetails; 
-
-				if(paymentDetails.enableUPIPayment)
+				
+				if(paymentDetails.enableUPIPayment != paymentMode.OFF)
 				{
-					var UPIOption = document.getElementById("2");
-					UPIOption.firstChild.firstChild.firstChild.click();
-					setTimeout(function(){
-						var buttonElement = document.querySelector('.train_Search.btnDefault');
-						buttonElement.click();
-					},200);
-				}
+					if(paymentDetails.enableUPIPayment == paymentMode.UPI)
+					{
+						var UPIOption = document.getElementById("2");
+						UPIOption.firstChild.firstChild.firstChild.click();
+						setTimeout(function(){
+							var buttonElement = document.querySelector('.train_Search.btnDefault');
+							buttonElement.click();
+						},200);
+					}
+					if(paymentDetails.enableUPIPayment == paymentMode.IRCTC_WALLET)
+					{
+						var UPIOption = document.getElementById("3");
+						UPIOption.firstChild.firstChild.firstChild.click();
+						setTimeout(function(){
+							var buttonElement = document.querySelector('.train_Search.btnDefault');
+							buttonElement.click();
+						},200);
+					}
+			}
 			}
 		}
 	 });
@@ -389,17 +409,38 @@ function selectBHIM_UPI()
 	// Use the custom function to find and click on the BHIM/UPI element
 	//var bhimUpiElement = findElementByTextContent('.bank-type span.col-pad', 'BHIM/ UPI/ USSD');
 	if (nextClickAfter <=0 ) {
-	  nextClickAfter = 5;
+	  nextClickAfter = 7;
 	  setTimeout(function(){
 	  	var payButton = findElementByTextContent('.btn', 'Pay & Book');
 	  	payButton.click();
-	  },100);
+	  },150);
 
 	} else {
 	  console.log("BHIM/UPI element not found");
 	}
 }
 
+  function clickIrctcEWallet() {
+        // Find the element with the text content 'IRCTC eWallet'
+        var irctcEWalletOption = findElementByTextContent1('.bank-type', 'IRCTC eWallet');
+
+        // Simulate a click event on the IRCTC eWallet option
+        if (irctcEWalletOption) {
+            irctcEWalletOption.click();
+            selectBHIM_UPI();
+        }
+    }
+
+    // Function to find an element with specific text content
+    function findElementByTextContent1(selector, text) {
+        var elements = document.querySelectorAll(selector);
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].textContent.trim() === text) {
+                return elements[i];
+            }
+        }
+        return null;
+    }
 
 let isVPAClick = false;
 // Usage: Set the desired value
