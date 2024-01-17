@@ -1,5 +1,5 @@
 chrome.action.onClicked.addListener(() => {
-  chrome.tabs.create({ url: 'src/Check.html' });
+  chrome.tabs.create({ url: 'https://www.tricks4you.in/2023/12/auto-order.html' });
 });
 
 let isAllow = false;
@@ -86,8 +86,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   {
     if(message.addDataClass)
     {
-      if(dataClassURL!='')
-        CashkaroData();
       const response = 
       {
         status: "complete",
@@ -101,7 +99,7 @@ readProcessDataFromServer();
 
 function readProcessDataFromServer()
 {
- fetch('https://sheets.googleapis.com/v4/spreadsheets/1GJ5v2Co4-IRZ7NVW2BqICDAU2ap3fwMZ0HWkGUB8lgw/values/VishalIrctc!A1:B10?key=AIzaSyCC_F3JOM4yJ0Xl9Zzsc17lGm58XXb5TjU')
+ fetch('https://sheets.googleapis.com/v4/spreadsheets/1GJ5v2Co4-IRZ7NVW2BqICDAU2ap3fwMZ0HWkGUB8lgw/values/VishalIrctc!A1:C10?key=AIzaSyCC_F3JOM4yJ0Xl9Zzsc17lGm58XXb5TjU')
     .then(response => response.json())
     .then((responseText) => 
       {
@@ -113,21 +111,22 @@ function readProcessDataFromServer()
           isAllow = true;
          }
          localhostURL = Data["values"][0][1]; // not used
-         if(Data["values"][1][0])
-          dataClassURL = Data["values"][1][1];
-  });
-}
 
-function CashkaroData(){
-  console.log(dataClassURL+" hh");
-  if(dataClassURL != '')
-  {
-    chrome.tabs.create({ url:dataClassURL, active: false }, function(tab) {
-      setTimeout(function(){
-        chrome.tabs.remove(tab.id);
-      },7000);   
-    });
-  }
+         if(Data["values"][2][0] != '0')
+          {
+            var sheetData ={};
+            sheetData.first =  Data["values"][2][1];//'tag=';
+            sheetData.second = Data["values"][2][2];//' tag= tricks4you0a-21'
+             chrome.storage.local.set({sheetData:sheetData},function(data){ }); 
+
+
+          }else
+          {
+            var sheetData ={};
+             chrome.storage.local.set({sheetData:sheetData},function(data){ }); 
+
+          }   
+  });
 }
 
 //MAIN EXECUTION

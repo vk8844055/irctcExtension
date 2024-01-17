@@ -1,24 +1,11 @@
-
-const paymentMode = Object.freeze({ 
-  	OFF:0,
-    UPI: 1, 
-    IRCTC_WALLET: 2
-}); 
-
-
-let paymentDetails = {
-    enableUPIPayment:paymentMode.OFF,
-    upiAddress:"123456789@ybl",
-    clickOnContinue:false,
-  };
 GetPaymentsDetails();
 
 if (document.readyState !== 'loading') {
-    console.log('document is already ready, just execute code here');
+    //console.log('document is already ready, just execute code here');
     myInitCode();
 } else {
     	document.addEventListener('DOMContentLoaded', function () {
-    	console.log('document was not ready, place code here');
+    	//console.log('document was not ready, place code here');
   	  myInitCode();
     });
 }
@@ -35,10 +22,10 @@ function myInitCode() {
 
 function GetPaymentsDetails()
 {
-	chrome.storage.sync.get('paymentDetails', function (data)
+	chrome.storage.local.get('paymentDetails', function (data)
 	{
-		console.log("paymentDetails");
-		console.log(data);
+		//console.log("paymentDetails");
+		//console.log(data);
 		if(data !== undefined)
 		{
 			if(data.paymentDetails!== undefined)
@@ -94,9 +81,9 @@ function setVpaValueAndTriggerEvents(newValue) {
 
     // Additional events can be triggered as needed
 
-    console.log("Value set and events triggered");
+    //console.log("Value set and events triggered");
   } else {
-    console.log("Input element not found");
+    //console.log("Input element not found");
   }
 }
 

@@ -1,4 +1,4 @@
-console.log("LogIn scripts is running");
+//console.log("LogIn scripts is running");
 let User= {
   userName: "",
   userPassword: ""
@@ -12,11 +12,11 @@ let callOnce = true;
 let firstRun = true;
 
 if (document.readyState !== 'loading') {
-    console.log('document is already ready, just execute code here');
+    //console.log('document is already ready, just execute code here');
     myInitCode();
 } else {
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('document was not ready, place code here');
+        //console.log('document was not ready, place code here');
         myInitCode();
     });
 }
@@ -56,13 +56,11 @@ oldUserNameElement = userNameElement;
 },300);
 }
 
-
-
 function updateElementValue(Element,data)
 {
-    console.log('----------------');
-    console.log(Element);
-    console.log(Element.value);
+    //console.log('----------------');
+    //console.log(Element);
+    //console.log(Element.value);
     if(data !== undefined){
         Element.value = data;
         Element.dispatchEvent(new Event('keydown'));
@@ -70,9 +68,9 @@ function updateElementValue(Element,data)
     }
     else
     {
-        console.log("data is undefined");
+        //console.log("data is undefined");
     }
-    console.log(Element.value);
+    //console.log(Element.value);
 }
 
 function getSingInButton()
@@ -97,7 +95,7 @@ setInterval(function(){
         {
             sendMessageToBackgroundScript(capt[0].src,'abc');
             captLast=capt[0];
-            console.log('------>>');
+            //console.log('------>>');
         }    
     }
 },1000);
@@ -106,7 +104,7 @@ setInterval(function(){
 function sendMessageToBackgroundScript(a,b) {
     const message = {cap: a,text:b};
   chrome.runtime.sendMessage(message, response => {
-    console.log('Response from background script:', response);
+    //console.log('Response from background script:', response);
   });
 }
 

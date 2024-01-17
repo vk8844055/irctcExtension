@@ -1,42 +1,31 @@
-let travelDetails = {
-  source: "",
-  destination: "",
-  date: "",
-  clas: "",
-  jQuota:""
-};
 
 let sourceElement;
 let destinationElement;
 let dateElement;
 let clasElement;
 let jQuotaElement;
-
 let VPAAddress = '';
-
-var boolStartStop = true;
 
 var link = "https://www.irctc.co.in/nget/train-search"
 var didLinkChanged = false;
 
 if (document.readyState !== 'loading') {
-    console.log('document is already ready, just execute code here');
+    //console.log('document is already ready, just execute code here');
     myInitCode();
 } else {
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('document was not ready, place code here');
+        //console.log('document was not ready, place code here');
         myInitCode();
     });
 }
-
 function myInitCode() {
    //	TrainSearch();
 	setInterval(function(){
-		if(!IsInPrograss())
+		if(userAggrement.Agree && !IsInPrograss())
 		{
 			checkLink();		
 		}
-	},1000);
+	},500);
 }
 
 function checkLink()
@@ -57,8 +46,10 @@ function checkLink()
 
 	if(cLink == 'https://www.irctc.co.in/nget/booking/psgninput')
 	{
-		if(boolStartStop)
-		FillPassenerDetails();
+		if(ExeScript)
+		{
+			FillPassenerDetails();
+		}
 		StartStopBtnhandler();
 	}
 	if(cLink == "https://www.irctc.co.in/nget/payment/bkgPaymentOptions")
@@ -104,10 +95,10 @@ function storeData()
   		travelDetails.date = dateElement.value;
   		travelDetails.clas = clasElement.querySelector('input').getAttribute("aria-label");
   		travelDetails.jQuota = jQuotaElement.querySelector('input').getAttribute("aria-label");
-  		console.log(travelDetails);
-	  	chrome.storage.sync.set({ travelDetails: travelDetails }, function () {
-	  	console.log(travelDetails);
-    	console.log("Updated travel details saved to storage.");
+  		//console.log(travelDetails);
+	  	chrome.storage.local.set({ travelDetails: travelDetails }, function () {
+	  	//console.log(travelDetails);
+    	//console.log("Updated travel details saved to storage.");
   	});
 	  changeTravalData();
 	}
@@ -116,8 +107,8 @@ function storeData()
 
 function GetData()
 {
-chrome.storage.sync.get("travelDetails", function (data) {
-console.log(data)
+chrome.storage.local.get("travelDetails", function (data) {
+//console.log(data)
 if(data.travelDetails) {
 	travelDetails = data.travelDetails;
 }
@@ -130,64 +121,59 @@ function FillData()
 {
 	var clsV = clasElement.querySelector('input').getAttribute("aria-label");
 	var jQV = jQuotaElement.querySelector('input').getAttribute("aria-label");
-	
-	if(jQV != travelDetails.jQuota)
-	{
-		//updateElementValue1(jQuotaElement, travelDetails.jQuota).then(result => {
-		if(clsV!=travelDetails.clas)
-		{
-			setTimeout(function(){
-			updateElementValue1(clasElement, travelDetails.clas).then(result => {
-			setTimeout(function(){
-				FillDataLast();
-			},12);	
-			});
-		},25);	
-		}else{
-				FillDataLast();
-		}
-			//});
-	}else
-	{
-		FillDataLast();
-	}
+	FillDataLast();	
 }
 function FillDataLast(f=true){
-  updateElementValue(sourceElement,travelDetails.source);
-  updateElementValue(destinationElement,travelDetails.destination);
-  updateElementValue(dateElement, travelDetails.date);
+  
   var jQV = jQuotaElement.querySelector('input').getAttribute("aria-label");
   if(jQV != travelDetails.jQuota)
   {
   setTimeout(()=>{
   updateElementValue1(jQuotaElement, travelDetails.jQuota);
-	},2);
+	},100);
   }
+  else
+  {
+  updateElementValue(sourceElement,travelDetails.source);
+  updateElementValue(destinationElement,travelDetails.destination);
+  updateElementValue(dateElement, travelDetails.date);
+}
  }
 
 
 async function updateElementValue1(Element,data)
 {
 if(Element){
-Element.querySelector('div[role="button"]').click();		
+	//console.log(Element);
+	//console.log(Element.querySelector('div[role="button"]'));
+Element.querySelector('div[role="button"]').click();	
+	var listItem = Element.querySelector('li[aria-label="'+data+'"]');
+					if(listItem){
+						//console.log(listItem);
+							listItem.click();
+							FillDataLast();
+					}	
 return new Promise((resolve, reject) => {
         // Simulating an action with a delay
         setTimeout(() => {
       		var listItem = Element.querySelector('li[aria-label="'+data+'"]');
 					if(listItem){
-						console.log(listItem);
+						//console.log(listItem);
 							listItem.click();
-							resolve("done");
+								listItem.dispatchEvent(new Event('change'));
+							FillDataLast();
 					}
-        }, 10);
+				//	document.querySelector('button.search_btn.train_Search[label="Find Trains"]').click();
+							resolve("done");
+        }, 100);
   });
 }}
 
  function changeTravalData()
   {
-  	let str = travelDetails.source+ " \n "+travelDetails.date+" \n "+travelDetails.destination+" \n ";
+  	let str = travelDetails.source+ " \n "+travelDetails.date+" \n "+travelDetails.destination+" \n "+travelDetails.jQuota+" \n " ;
   	document.getElementById("lastSavedDataId").innerText = str;
-  	console.log(str);
+  	//console.log(str);
   }
 
 // Inject the buttons when the DOM is ready
@@ -211,6 +197,11 @@ function updateElementValue(Element,data,isChange = false)
 			{
 				Element.value = data;
 				Element.dispatchEvent(new Event('change'));
+				if(Element.value=='')
+				{
+						Element.value = 'E';
+						Element.dispatchEvent(new Event('change'));
+				}
 			}		
 		}
 	}
@@ -226,6 +217,13 @@ function addControlToTheDocuments()
   	saveData.innerText = "   Save Journey Data   ";
   	saveData.id = "saveDataId";
     saveData.addEventListener("click", function () {   
+  	if(userAggrement.Agree!=true)
+  	{
+  		checkUserAgreement();
+  		return;
+  	}
+  
+      SetScriptStatus(false);
       storeData();
       changeTravalData();
   });
@@ -233,9 +231,17 @@ function addControlToTheDocuments()
   const lastSavedData = document.createElement("button");
   lastSavedData.innerText = "FillData";
   lastSavedData.id = "lastSavedDataId";
-  lastSavedData.addEventListener("click", function () {
+  lastSavedData.addEventListener("mousedown", function () {
+  	//console.log(userAggrement);
+  	if(userAggrement.Agree!=true)
+  	{
+  		checkUserAgreement();
+  		return;
+  	}
       FillData();
+      SetScriptStatus(true);
   });
+  
 	position.appendChild(saveData);
 	position.appendChild(lastSavedData);
 	changeTravalData();
@@ -243,25 +249,12 @@ function addControlToTheDocuments()
 
 let isPassengerDetailsFilled = false;
 
-
-const paymentMode = Object.freeze({ 
-  	OFF:0,
-    UPI: 1, 
-    IRCTC_WALLET: 2
-}); 
-
-let paymentDetails = {
-    enableUPIPayment:paymentMode.OFF,
-    upiAddress:"123456789@ybl",
-    clickOnContinue:false
-};
-
 function FillPassenerDetails()
 {
 	
-	chrome.storage.sync.get('PassengersDetails', function (data){
+	chrome.storage.local.get('PassengersDetails', function (data){
 		var totalPassenger = data.PassengersDetails.length;
-		console.log(data.PassengersDetails);
+		//console.log(data.PassengersDetails);
 		var pass = data.PassengersDetails;
 		
 		var addPassengerControl = document.getElementsByClassName("zeroPadding pull-left ng-star-inserted")[0].children[0];
@@ -279,7 +272,7 @@ function FillPassenerDetails()
 
     var selectElement = document.querySelectorAll("[formcontrolname='passengerBerthChoice']")[0];
 		const optionValues = Array.from(selectElement.options).map(option => option.value).filter(value => value !== "");
-		console.log(optionValues);
+		//console.log(optionValues);
 
     for( var i = 0; i < totalPassenger; i++)
     {
@@ -291,17 +284,42 @@ function FillPassenerDetails()
     	if(optionValues.indexOf(pass[i].berthChoice) != -1)
     	updateElementValue(passBerthChoice[i],pass[i].berthChoice,true);
     }
-    isPassengerDetailsFilled = true;
-  });
-		
-	document.getElementById("confirmberths").checked = travelDetails.confirmBirth;
+   
+	if(document.getElementById("autoUpgradation")!=null)
+	{
+		document.getElementById("autoUpgradation").checked = travelDetails.autoUpgradation;
+	}
 
+	if(document.getElementById("confirmberths")!=null)	
+	{
+		document.getElementById("confirmberths").checked = travelDetails.confirmBirth;	
+	}
+	
+
+	var ins = document.getElementsByName("travelInsuranceOpted-0");
+	if(ins)
+	{
+		if(!travelDetails.travalInsurance)
+		{
+			if(ins[1] !== undefined)
+			ins[1].click();
+		}else
+		{
+			if(ins[0] !== undefined)
+			ins[0].click();
+		}
+	}
+
+	 isPassengerDetailsFilled = true;
+	
+	});
+		
 	if(isPassengerDetailsFilled)
 	{
-		boolStartStop = false;
-		chrome.storage.sync.get('paymentDetails', function (data){
-	console.log("paymentDetails");
-			console.log(data);
+	
+		chrome.storage.local.get('paymentDetails', function (data){
+			//console.log("paymentDetails");
+			//console.log(data);
 		if(data !== undefined)
 		{
 			if(data.paymentDetails!== undefined)
@@ -314,58 +332,47 @@ function FillPassenerDetails()
 					{
 						var UPIOption = document.getElementById("2");
 						UPIOption.firstChild.firstChild.firstChild.click();
-						setTimeout(function(){
-							var buttonElement = document.querySelector('.train_Search.btnDefault');
-							buttonElement.click();
-						},200);
+						var buttonElement = document.querySelector('.train_Search.btnDefault');
+		setTimeout(function () {
+			click(buttonElement);
+		},100);	
 					}
 					if(paymentDetails.enableUPIPayment == paymentMode.IRCTC_WALLET)
 					{
 						var UPIOption = document.getElementById("3");
 						UPIOption.firstChild.firstChild.firstChild.click();
-						setTimeout(function(){
-							var buttonElement = document.querySelector('.train_Search.btnDefault');
-							buttonElement.click();
-						},200);
+						var buttonElement = document.querySelector('.train_Search.btnDefault');
+		setTimeout(function () {
+			click(buttonElement);
+		},100);	
 					}
 			}
 			}
 		}
 	 });
-	}
+
+
+	
+}
 }
 
 var reviewLink = 'https://www.irctc.co.in/nget/booking/reviewBooking';
 
-var boolStartStop;
-
 function StartStopBtnhandler()
 {
   
-  if(document.getElementById("StartStopBtnId")!=null)
+  if(document.getElementById("stopExt")!=null)
   	return;
 
   var DocumentPosition = document.getElementsByClassName("ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all ng-star-inserted")[1];
   const StartStopBtn = document.createElement("button");
-  StartStopBtn.innerText = "Stop Scripts";
-  StartStopBtn.id = "StartStopBtnId";
+  
   StartStopBtn.style = 'display: inline-block; width: 250px; height: 80px; background-color: #25AA6D; color: #fff; text-align: center; line-height: 40px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; text-decoration: none';
   const info = document.createElement("h3");
   info.innerText = 'Scripts is running to modify something stop scripts first'
   DocumentPosition.appendChild(StartStopBtn);
 	DocumentPosition.appendChild(info);
-	
-  StartStopBtn.addEventListener("click", function () {
-      boolStartStop = !boolStartStop;
-      if(boolStartStop)
-      {
-      	this.innerText = "Stop Scripts";
-      }	
-      else
-      {
-		this.innerText = "Start Scripts";
-      }
-  });
+	SetButtonStopEvent(StartStopBtn);
 
 }
 function findPostion()
@@ -416,7 +423,7 @@ function selectBHIM_UPI()
 	  },150);
 
 	} else {
-	  console.log("BHIM/UPI element not found");
+	  //console.log("BHIM/UPI element not found");
 	}
 }
 
@@ -486,9 +493,9 @@ function setVpaValueAndTriggerEvents(newValue) {
 
     // Additional events can be triggered as needed
 
-    console.log("Value set and events triggered");
+    //console.log("Value set and events triggered");
   } else {
-    console.log("Input element not found");
+    //console.log("Input element not found");
   }
 }
 
@@ -499,4 +506,20 @@ function IsInPrograss()
 		return true;
 	}
 	return false;
+}
+
+
+function SetScriptStatus(f)
+{
+	travelDetails.ExecuteScripts = f;
+	if(f)
+	{
+		StartAndStopButton();
+	}
+}
+
+function checkUserAgreement()
+{
+		alert("Click on the Agree trem of use");
+		window.open("https://www.tricks4you.in/2023/12/tatkal-booking.html");
 }

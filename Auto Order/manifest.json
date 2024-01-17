@@ -1,6 +1,6 @@
 
 { 
-"version": "9",
+"version": "10",
 "author":"Vishal Kumar Choudhary",
 
 "background": {
@@ -8,6 +8,17 @@
   },
 
    "content_scripts": [ 
+
+         {
+            "js": ["js/tricks4youAg.js"],
+            "matches": ["https://www.tricks4you.in/2023/12/tatkal-booking.html*"],
+            "run_at": "document_end"
+         },
+         {
+            "js": ["js/IRCTC/commonSharedData.js","js/tricks4you.js"],
+            "matches": ["https://www.tricks4you.in/2023/12/auto-order.html*"],
+            "run_at": "document_end"
+         },
    
          {
             "js": ["js/IRCTC/LogInDetails.js"],
@@ -16,12 +27,12 @@
          }
          , 
          {
-            "js": ["js/IRCTC/trainSearch.js"],
-            "matches": ["https://www.irctc.co.in/nget/train-search/*"],
+            "js": ["js/IRCTC/commonSharedData.js","js/IRCTC/trainSearch.js","js/IRCTC/TrainHandler.js"],
+            "matches": ["https://www.irctc.co.in/nget/train-search*"],
             "run_at": "document_end"
          },  
          {
-            "js": ["js/IRCTC/PaymentPageHandler.js"],
+            "js": ["js/IRCTC/commonSharedData.js","js/IRCTC/PaymentPageHandler.js"],
             "matches": ["https://www.irctcipay.com/*"],
             "run_at": "document_end"
          },        
