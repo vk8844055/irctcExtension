@@ -1,6 +1,6 @@
 
 { 
-"version": "10",
+"version": "13",
 "author":"Vishal Kumar Choudhary",
 
 "background": {
@@ -8,12 +8,6 @@
   },
 
    "content_scripts": [ 
-
-         {
-            "js": ["js/tricks4youAg.js"],
-            "matches": ["https://www.tricks4you.in/2023/12/tatkal-booking.html*"],
-            "run_at": "document_end"
-         },
          {
             "js": ["js/IRCTC/commonSharedData.js","js/tricks4you.js"],
             "matches": ["https://www.tricks4you.in/2023/12/auto-order.html*"],
@@ -45,7 +39,7 @@
          
       ],
    "default_locale": "en",
-   "description": " Auto Order Tatkal ticket on IRCTC, order from sale buy any item from flash sale on amazon",
+   "description": "Help to Book Tatkal ticket on the IRCTC",
      "icons": {
       "128": "icons/E128.png",
       "16": "icons/E16.png",
@@ -55,7 +49,6 @@
  "action": {},
    "manifest_version": 3,     
    "name": "Auto Order",   
-   "host_permissions":["https://www.amazon.in/*","https://www.irctc.co.in/*"],
    "permissions": ["storage"],   
    "short_name": "Tatkal Ticket IRCTC",   
    "update_url": "https://clients2.google.com/service/update2/crx",   

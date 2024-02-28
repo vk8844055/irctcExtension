@@ -401,6 +401,8 @@ function GetTatkalBooking()
         return true;
     }
 
+
+    d.setSeconds(d.getSeconds() + 1);
     return d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+" Click to Stop Extension";
 }
 
@@ -497,7 +499,7 @@ function parseCustomDateTime() {
     var hours = parseInt(matches[4], 10);
     var minutes = parseInt(matches[5], 10);
     var seconds = parseInt(matches[6], 10);
-    seconds++;
+    seconds--;
 
     // Create a Date object with extracted components
     return new Date(year, month, day, hours, minutes, seconds);

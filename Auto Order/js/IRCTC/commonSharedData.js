@@ -1,6 +1,6 @@
 var userAggrement =
 {
-    Agree:false,
+    Agree:true,
     Expire:""
 }
 
@@ -32,6 +32,8 @@ var travelDetails = {
 userAggrementDetails();
 function userAggrementDetails()
 {
+    userAggrement.Agree = true;
+    return;
   chrome.storage.local.get('userAggrementExpire',function(x)
     {
         console.log(x.userAggrementExpire);
@@ -39,7 +41,7 @@ function userAggrementDetails()
         {
             if(x.userAggrementExpire!==undefined)
             {
-                userAggrement.Agree = isUserAggrementExpire(x.userAggrementExpire);
+                userAggrement.Agree = true||isUserAggrementExpire(x.userAggrementExpire);
                  console.log(userAggrement);
             }
         }
